@@ -1,0 +1,244 @@
+{
+  "tenant": {
+    "name": "gio",
+    "channels": {
+      "channel": [
+        {
+          "name": "search",
+          "parameters": [
+            {
+              "parameter_name": "Ad Group",
+              "parameter_type": "String",
+              "values": [
+                "Car Insurance",
+                "Home Insurance",
+                "Brand",
+                "Landlord Insurance",
+                "Contacts Insurance"
+              ]
+            },
+            {
+              "parameter_name": "Device",
+              "parameter_type": "String",
+              "values": [
+                "Computer",
+                "Mobile",
+                "Tablet"
+              ]
+            },
+            {
+              "parameter_name": "Search Engine",
+              "parameter_type": "String",
+              "values": [
+                "Microsoft Bing Ads",
+                "Google AdWords",
+                "AOL Search",
+                "Yahoo Ads"
+              ]
+            },
+            {
+              "parameter_name": "Cost",
+              "parameter_type": "number",
+              "minimum": 0,
+              "maximum": 100
+            },
+            {
+              "parameter_name": "Clicks",
+              "parameter_type": "integer",
+              "minimum": 0,
+              "maximum": 20
+            },
+            {
+              "parameter_name": "CPC",
+              "parameter_type": "number",
+              "minimum": 0,
+              "maximum": 10
+            },
+            {
+              "parameter_name": "Avg Position",
+              "parameter_type": "number",
+              "minimum": 0,
+              "maximum": 5
+            },
+            {
+              "parameter_name": "Impressions",
+              "parameter_type": "integer",
+              "minimum": 0,
+              "maximum": 100
+            },
+            {
+              "parameter_name": "Quote",
+              "parameter_type": "integer",
+              "minimum": 0,
+              "maximum": 10
+            },
+            {
+              "parameter_name": "Leads",
+              "parameter_type": "integer",
+              "minimum": 0,
+              "maximum": 5
+            }
+          ]
+        },
+        {
+          "name": "display",
+          "parameters": [
+            {
+              "parameter_name": "Ad Group",
+              "parameter_type": "String",
+              "values": [
+                "Remarketing",
+                "Sports Category",
+                "Goal.com - ADX",
+                "General"
+              ]
+            },
+            {
+              "parameter_name": "Device",
+              "parameter_type": "String",
+              "values": [
+                "Computer",
+                "Mobile",
+                "Tablet"
+              ]
+            },
+            {
+              "parameter_name": "Search Engine",
+              "parameter_type": "String",
+              "values": [
+                "Microsoft Bing Ads",
+                "Google AdWords",
+                "AOL Search"
+              ]
+            },
+            {
+              "parameter_name": "Cost",
+              "parameter_type": "number",
+              "minimum": 0,
+              "maximum": 100
+            },
+            {
+              "parameter_name": "Clicks",
+              "parameter_type": "integer",
+              "minimum": 0,
+              "maximum": 20
+            },
+            {
+              "parameter_name": "CPC",
+              "parameter_type": "number",
+              "minimum": 0,
+              "maximum": 10
+            },
+            {
+              "parameter_name": "Avg Position",
+              "parameter_type": "number",
+              "minimum": 0,
+              "maximum": 5
+            },
+            {
+              "parameter_name": "Impressions",
+              "parameter_type": "integer",
+              "minimum": 0,
+              "maximum": 100
+            },
+            {
+              "parameter_name": "Quote",
+              "parameter_type": "integer",
+              "minimum": 0,
+              "maximum": 10
+            },
+            {
+              "parameter_name": "RTB Source",
+              "parameter_type": "String",
+              "values" : [
+                "AdX",
+                "AppNexus",
+                "Casale",
+                "OpenX",
+                "Rubicorn"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "social",
+          "parameters": [
+            {
+              "parameter_name": "Ad Group",
+              "parameter_type": "String",
+              "values": [
+                "FBX Master",
+                "GIO BAU",
+                "GIO CTP",
+                "GIO FB",
+                "CarouselAd",
+                "New Restructure"
+              ]
+            },
+            {
+              "parameter_name": "Device",
+              "parameter_type": "String",
+              "values": [
+                "Computer",
+                "Mobile",
+                "Tablet"
+              ]
+            },
+            {
+              "parameter_name": "Search Engine",
+              "parameter_type": "String",
+              "values": [
+                "Facebook",
+                "Quora",
+                "Google Plus",
+                "RTB"
+              ]
+            },
+            {
+              "parameter_name": "Cost",
+              "parameter_type": "number",
+              "minimum": 0,
+              "maximum": 100
+            },
+            {
+              "parameter_name": "Clicks",
+              "parameter_type": "integer",
+              "minimum": 0,
+              "maximum": 20
+            },
+            {
+              "parameter_name": "CPC",
+              "parameter_type": "number",
+              "minimum": 0,
+              "maximum": 10
+            },
+            {
+              "parameter_name": "Avg Position",
+              "parameter_type": "number",
+              "minimum": 0,
+              "maximum": 5
+            },
+            {
+              "parameter_name": "Impressions",
+              "parameter_type": "integer",
+              "minimum": 0,
+              "maximum": 100
+            },
+            {
+              "parameter_name": "CTR",
+              "parameter_type": "number",
+              "minimum": 0.00,
+              "maximum": 20.00
+            },
+            {
+              "parameter_name": "ePCM",
+              "parameter_type": "number",
+              "minimum": 0.00,
+              "maximum": 50.00
+            }
+          ]
+        }
+      ]
+    }
+  }
+}
