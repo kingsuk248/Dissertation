@@ -13,6 +13,8 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<scala.tools.version>2.11.12</scala.tools.version>
+		<scala.version>2.11.12</scala.version>
 	</properties>
 
 	<distributionManagement>
@@ -46,7 +48,23 @@
 			<groupId>org.apache.spark</groupId>
 			<artifactId>spark-sql-kafka-0-10_2.12</artifactId>
 			<version>2.4.3</version>
-			<!-- <scope>provided</scope> -->
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.spark</groupId>
+			<artifactId>spark-streaming_2.11</artifactId>
+			<version>2.0.0</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<!-- <dependency> <groupId>org.apache.logging.log4j</groupId> <artifactId>log4j-api</artifactId> 
+			<version>2.12.1</version> </dependency> <dependency> <groupId>org.apache.logging.log4j</groupId> 
+			<artifactId>log4j-core</artifactId> <version>2.12.1</version> </dependency> -->
+
+		<dependency>
+			<groupId>commons-logging</groupId>
+			<artifactId>commons-logging</artifactId>
+			<version>1.1.1</version>
 		</dependency>
 	</dependencies>
 
@@ -61,40 +79,28 @@
 					<target>1.8</target>
 				</configuration>
 			</plugin>
-			<!-- <plugin> <groupId>org.apache.maven.plugins</groupId> <artifactId>maven-jar-plugin</artifactId> 
-				<version>3.1.2</version> <configuration> <archive> <manifest> <mainClass>com.application.subscriber.topic.kafka.spark.Application</mainClass> 
-				</manifest> </archive> </configuration> </plugin> -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-shade-plugin</artifactId>
-				<version>3.2.1</version>
-				<executions>
-					<execution>
-						<phase>package</phase>
-						<goals>
-							<goal>shade</goal>
-						</goals>
-						<configuration>
-							<transformers>
-								<transformer
-									implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-									<mainClass>com.application.subscriber.topic.kafka.spark.Application</mainClass>
-								</transformer>
-							</transformers>
-							<filters>
-								<filter>
-									<artifact>*:*</artifact>
-									<excludes>
-										<exclude>META-INF/*.SF</exclude>
-										<exclude>META-INF/*.DSA</exclude>
-										<exclude>META-INF/*.RSA</exclude>
-									</excludes>
-								</filter>
-							</filters>
-						</configuration>
-					</execution>
-				</executions>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>3.1.2</version>
+				<configuration>
+					<archive>
+						<manifest>
+							<mainClass>com.application.subscriber.topic.kafka.spark.Application</mainClass>
+						</manifest>
+					</archive>
+				</configuration>
 			</plugin>
+			<!-- Plugin for uber.jar -->
+			<!-- <plugin> <groupId>org.apache.maven.plugins</groupId> <artifactId>maven-shade-plugin</artifactId> 
+				<version>3.2.1</version> <executions> <execution> <phase>package</phase> 
+				<goals> <goal>shade</goal> </goals> <configuration> <transformers> <transformer 
+				implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer"> 
+				<mainClass>com.application.subscriber.topic.kafka.spark.Application</mainClass> 
+				</transformer> </transformers> <filters> <filter> <artifact>*:*</artifact> 
+				<excludes> <exclude>META-INF/*.SF</exclude> <exclude>META-INF/*.DSA</exclude> 
+				<exclude>META-INF/*.RSA</exclude> </excludes> </filter> </filters> </configuration> 
+				</execution> </executions> </plugin> -->
 		</plugins>
 		<extensions>
 			<extension>
