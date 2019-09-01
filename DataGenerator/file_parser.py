@@ -5,13 +5,14 @@ import random
 import time
 import datetime
 import csv
+import pysftp
 
 
 class JsonParser:
     global config
     global data_rows_count
     config = configparser.ConfigParser()
-    config.read('file_locations/config.ini')
+    config.read('config/config.ini')
     data_rows_count = config['size']['data_rows']
 
     def generate_csv(self):
@@ -25,7 +26,9 @@ class JsonParser:
                 json_file = json_files + "/" + tenant + ".json"
                 if path.exists(json_file):
                     tenant_name, csv_channels_list = self.parse_file(json_file)
-                    self.create_csv(tenant_name, csv_channels_list)
+                    generated_files = self.create_csv(tenant_name, csv_channels_list)
+                    self.copy_files_to_server(generated_files)
+            print("========== Done ==========")
 
     @staticmethod
     def get_tenants():
@@ -88,6 +91,7 @@ class JsonParser:
     def create_csv(tenant_name, csv_channels_list):
         destination_location = config['output']['destination']
         time_format = datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d_%H-%M-%S.%f')
+        generated_files = {}
         for i in range(0, len(csv_channels_list)):
             channel_name = csv_channels_list[i].channel_name
             file_path = destination_location + "/" + tenant_name + '_' + channel_name + '_' + time_format + ".csv"
@@ -103,6 +107,26 @@ class JsonParser:
                     csv_writer.writerow(values_list)
                     values_list.clear()
             csv_file.close()
+            generated_files[channel_name] = file_path
+        return generated_files
+
+    @staticmethod
+    def copy_files_to_server(generated_files):
+        hostname = config['server']['hostname']
+        username = config['server']['username']
+        key_location = config['server']['key_location']
+        connection = None
+        try:
+            connection = pysftp.Connection(host=hostname, username=username, private_key=key_location)
+            for channel in generated_files:
+                file_name = str(generated_files.get(channel)).split("/")[-1]
+                remote_path = config['server']['files_destination'] + channel + "/" + file_name
+                print(remote_path)
+                print(generated_files.get(channel))
+                connection.put(localpath=generated_files.get(channel), remotepath=remote_path, confirm=False)
+            connection.close()
+        finally:
+            connection.close()
 
 
 class DigitalMediaChannel:

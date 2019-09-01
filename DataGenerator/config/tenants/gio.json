@@ -7,7 +7,7 @@
           "name": "search",
           "parameters": [
             {
-              "parameter_name": "Ad Group",
+              "parameter_name": "ad_group",
               "parameter_type": "String",
               "values": [
                 "Car Insurance",
@@ -18,7 +18,7 @@
               ]
             },
             {
-              "parameter_name": "Device",
+              "parameter_name": "device",
               "parameter_type": "String",
               "values": [
                 "Computer",
@@ -27,7 +27,7 @@
               ]
             },
             {
-              "parameter_name": "Search Engine",
+              "parameter_name": "search_engine",
               "parameter_type": "String",
               "values": [
                 "Microsoft Bing Ads",
@@ -37,43 +37,43 @@
               ]
             },
             {
-              "parameter_name": "Cost",
+              "parameter_name": "cost",
               "parameter_type": "number",
               "minimum": 0,
               "maximum": 100
             },
             {
-              "parameter_name": "Clicks",
+              "parameter_name": "clicks",
               "parameter_type": "integer",
               "minimum": 0,
               "maximum": 20
             },
             {
-              "parameter_name": "CPC",
+              "parameter_name": "cpc",
               "parameter_type": "number",
               "minimum": 0,
               "maximum": 10
             },
             {
-              "parameter_name": "Avg Position",
+              "parameter_name": "avg_position",
               "parameter_type": "number",
               "minimum": 0,
               "maximum": 5
             },
             {
-              "parameter_name": "Impressions",
+              "parameter_name": "impressions",
               "parameter_type": "integer",
               "minimum": 0,
               "maximum": 100
             },
             {
-              "parameter_name": "Quote",
+              "parameter_name": "quote",
               "parameter_type": "integer",
               "minimum": 0,
               "maximum": 10
             },
             {
-              "parameter_name": "Leads",
+              "parameter_name": "leads",
               "parameter_type": "integer",
               "minimum": 0,
               "maximum": 5
@@ -84,7 +84,7 @@
           "name": "display",
           "parameters": [
             {
-              "parameter_name": "Ad Group",
+              "parameter_name": "ad_group",
               "parameter_type": "String",
               "values": [
                 "Remarketing",
@@ -103,7 +103,7 @@
               ]
             },
             {
-              "parameter_name": "Search Engine",
+              "parameter_name": "search_engine",
               "parameter_type": "String",
               "values": [
                 "Microsoft Bing Ads",
@@ -112,43 +112,43 @@
               ]
             },
             {
-              "parameter_name": "Cost",
+              "parameter_name": "cost",
               "parameter_type": "number",
               "minimum": 0,
               "maximum": 100
             },
             {
-              "parameter_name": "Clicks",
+              "parameter_name": "clicks",
               "parameter_type": "integer",
               "minimum": 0,
               "maximum": 20
             },
             {
-              "parameter_name": "CPC",
+              "parameter_name": "cpc",
               "parameter_type": "number",
               "minimum": 0,
               "maximum": 10
             },
             {
-              "parameter_name": "Avg Position",
+              "parameter_name": "avg_position",
               "parameter_type": "number",
               "minimum": 0,
               "maximum": 5
             },
             {
-              "parameter_name": "Impressions",
+              "parameter_name": "impressions",
               "parameter_type": "integer",
               "minimum": 0,
               "maximum": 100
             },
             {
-              "parameter_name": "Quote",
+              "parameter_name": "quote",
               "parameter_type": "integer",
               "minimum": 0,
               "maximum": 10
             },
             {
-              "parameter_name": "RTB Source",
+              "parameter_name": "rtb_source",
               "parameter_type": "String",
               "values" : [
                 "AdX",
@@ -164,7 +164,7 @@
           "name": "social",
           "parameters": [
             {
-              "parameter_name": "Ad Group",
+              "parameter_name": "ad_group",
               "parameter_type": "String",
               "values": [
                 "FBX Master",
@@ -176,7 +176,7 @@
               ]
             },
             {
-              "parameter_name": "Device",
+              "parameter_name": "device",
               "parameter_type": "String",
               "values": [
                 "Computer",
@@ -185,7 +185,7 @@
               ]
             },
             {
-              "parameter_name": "Search Engine",
+              "parameter_name": "search_engine",
               "parameter_type": "String",
               "values": [
                 "Facebook",
@@ -195,43 +195,43 @@
               ]
             },
             {
-              "parameter_name": "Cost",
+              "parameter_name": "cost",
               "parameter_type": "number",
               "minimum": 0,
               "maximum": 100
             },
             {
-              "parameter_name": "Clicks",
+              "parameter_name": "clicks",
               "parameter_type": "integer",
               "minimum": 0,
               "maximum": 20
             },
             {
-              "parameter_name": "CPC",
+              "parameter_name": "cpc",
               "parameter_type": "number",
               "minimum": 0,
               "maximum": 10
             },
             {
-              "parameter_name": "Avg Position",
+              "parameter_name": "avg_position",
               "parameter_type": "number",
               "minimum": 0,
               "maximum": 5
             },
             {
-              "parameter_name": "Impressions",
+              "parameter_name": "impressions",
               "parameter_type": "integer",
               "minimum": 0,
               "maximum": 100
             },
             {
-              "parameter_name": "CTR",
+              "parameter_name": "ctr",
               "parameter_type": "number",
               "minimum": 0.00,
               "maximum": 20.00
             },
             {
-              "parameter_name": "ePCM",
+              "parameter_name": "e_pcm",
               "parameter_type": "number",
               "minimum": 0.00,
               "maximum": 50.00
