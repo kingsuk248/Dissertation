@@ -6,6 +6,7 @@ import time
 import datetime
 import csv
 import pysftp
+import platform
 
 
 class JsonParser:
