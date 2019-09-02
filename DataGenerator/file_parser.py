@@ -136,7 +136,7 @@ class JsonParser:
                 shutil.copyfile(src=file_name, dst=destination)
         else :
             print("Unsupported OS")
-            
+
 
 class DigitalMediaChannel:
     channel_name = ""
