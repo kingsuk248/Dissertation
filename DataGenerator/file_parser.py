@@ -132,7 +132,7 @@ class JsonParser:
         elif os_name == "Linux":
             for channel in generated_files:
                 file_name = str(generated_files.get(channel))
-                destination = config['server']['files_destination'] + channel
+                destination = config['server']['files_destination'] + channel + "/" + file_name.split("/")[-1]
                 shutil.copyfile(src=file_name, dst=destination)
         else :
             print("Unsupported OS")
