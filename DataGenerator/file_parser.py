@@ -7,6 +7,7 @@ import datetime
 import csv
 import pysftp
 import platform
+import shutil
 
 
 class JsonParser:
@@ -116,19 +117,26 @@ class JsonParser:
         hostname = config['server']['hostname']
         username = config['server']['username']
         key_location = config['server']['key_location']
-        connection = None
-        try:
-            connection = pysftp.Connection(host=hostname, username=username, private_key=key_location)
+        os_name = platform.system()
+        if os_name == "Windows":
+            connection = None
+            try:
+                connection = pysftp.Connection(host=hostname, username=username, private_key=key_location)
+                for channel in generated_files:
+                    file_name = str(generated_files.get(channel)).split("/")[-1]
+                    remote_path = config['server']['files_destination'] + channel + "/" + file_name
+                    connection.put(localpath=generated_files.get(channel), remotepath=remote_path, confirm=False)
+                connection.close()
+            finally:
+                connection.close()
+        elif os_name == "Linux":
             for channel in generated_files:
-                file_name = str(generated_files.get(channel)).split("/")[-1]
-                remote_path = config['server']['files_destination'] + channel + "/" + file_name
-                print(remote_path)
-                print(generated_files.get(channel))
-                connection.put(localpath=generated_files.get(channel), remotepath=remote_path, confirm=False)
-            connection.close()
-        finally:
-            connection.close()
-
+                file_name = str(generated_files.get(channel))
+                destination = config['server']['files_destination'] + channel
+                shutil.copyfile(src=file_name, dst=destination)
+        else :
+            print("Unsupported OS")
+            
 
 class DigitalMediaChannel:
     channel_name = ""
