@@ -15,6 +15,7 @@ public class StructuredSparkStreamer {
 		Dataset<Row> dataSetRows = sparkSession.readStream().format("kafka")
 				.option("kafka.bootstrap.servers", "localhost:9092")
 				.option("subscribe", "spooldir-search-topic,spooldir-display-topic,spooldir-social-topic").load();
-		dataSetRows.collectAsList().forEach(x -> System.out.println(x));
+		//dataSetRows.collectAsList().forEach(x -> System.out.println(x));
+		System.out.println("============ EXECUTION Finished ===========");
 	}
 }
