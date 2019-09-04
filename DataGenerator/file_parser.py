@@ -63,6 +63,12 @@ class JsonParser:
                         raise Exception('Undefined parameter type.')
                     csv_values_dict[parameter_name] = random_values
 
+                # Adding 'tenant_name' to csv
+                csv_values_dict['tenant_name'] = [tenant_name] * int(data_rows_count)
+
+                # Adding 'time_stamp' with format 'yearmonthdayhoursminutesseconds' to csv
+                csv_values_dict['time_stamp'] = [datetime.datetime.fromtimestamp(time.time())
+                                                    .strftime('%Y%m%d%H%M%S')] * int(data_rows_count)
                 dm_chane1 = DigitalMediaChannel()
                 dm_chane1.channel_name = channel_name
                 dm_chane1.channel_values = csv_values_dict
