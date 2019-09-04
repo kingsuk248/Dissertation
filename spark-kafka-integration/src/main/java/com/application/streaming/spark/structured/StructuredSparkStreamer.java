@@ -15,7 +15,15 @@ public class StructuredSparkStreamer {
 		Dataset<Row> dataSetRows = sparkSession.readStream().format("kafka")
 				.option("kafka.bootstrap.servers", "localhost:9092")
 				.option("subscribe", "spooldir-search-topic,spooldir-display-topic,spooldir-social-topic").load();
+		System.out.println("dataSetRows" + dataSetRows);
 		//dataSetRows.collectAsList().forEach(x -> System.out.println(x));
+		for (int i = 0; i < 300; i++) {
+			try {
+				Thread.sleep(1000);
+				System.out.println("Waiting: " + i);
+			} catch (InterruptedException e) {
+			}
+		}
 		System.out.println("============ EXECUTION Finished ===========");
 	}
 }
