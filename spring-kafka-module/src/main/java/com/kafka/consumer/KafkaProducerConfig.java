@@ -10,6 +10,8 @@ import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.core.ProducerFactory;
 import org.springframework.kafka.support.serializer.JsonSerializer;
 
+import com.kafka.model.message.Search;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -34,7 +36,7 @@ public class KafkaProducerConfig {
     }
     
     @Bean
-    public ProducerFactory<String, Greeting> greetingProducerFactory() {
+    public ProducerFactory<String, Search> searchMessageProducerFactory() {
         Map<String, Object> configProps = new HashMap<>();
         configProps.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapAddress);
         configProps.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
@@ -43,8 +45,7 @@ public class KafkaProducerConfig {
     }
     
     @Bean
-    public KafkaTemplate<String, Greeting> greetingKafkaTemplate() {
-        return new KafkaTemplate<>(greetingProducerFactory());
+    public KafkaTemplate<String, Search> searchKafkaTemplate() {
+        return new KafkaTemplate<>(searchMessageProducerFactory());
     }
-    
 }
