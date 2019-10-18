@@ -1,4 +1,4 @@
-package com.kafka.consumer;
+package com.kafka.controller;
 
 import java.text.DateFormat;
 import java.util.ArrayList;
@@ -8,7 +8,6 @@ import java.util.Map;
 
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.ObjectWriter;
-import org.codehaus.jackson.map.annotate.JsonFilter;
 import org.json.JSONObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

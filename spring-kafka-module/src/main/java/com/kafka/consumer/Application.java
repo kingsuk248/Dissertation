@@ -12,71 +12,106 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.core.KafkaTemplate;
 
+import com.kafka.cache.DisplayInMemoryCache;
+import com.kafka.cache.SearchInMemoryCache;
+import com.kafka.cache.SocialInMemoryCache;
+import com.kafka.model.channel.Display;
 import com.kafka.model.channel.Search;
+import com.kafka.model.channel.Social;
 import com.kafka.utilities.DataPopulator;
 
 @SpringBootApplication
 public class Application {
 
-    public static void main(String[] args) throws Exception {
+	public static void main(String[] args) throws Exception {
 
-        ConfigurableApplicationContext context = SpringApplication.run(Application.class, args);
-        
-        MessageProducer producer = context.getBean(MessageProducer.class);
-        MessageListener listener = context.getBean(MessageListener.class);
-        
-        Search search = DataPopulator.createSampleSearchObject("allianz");
-        producer.sendSearchMessage(search);
-        listener.latch.await(10, TimeUnit.SECONDS);
-        //context.close();
-    }
+		ConfigurableApplicationContext context = SpringApplication.run(Application.class, args);
 
-    @Bean
-    public MessageProducer messageProducer() {
-        return new MessageProducer();
-    }
+		MessageProducer producer = context.getBean(MessageProducer.class);
+		MessageListener listener = context.getBean(MessageListener.class);
 
-    @Bean
-    public MessageListener messageListener() {
-        return new MessageListener();
-    }
+		Search search = DataPopulator.createSampleSearchObject("allianz");
+		producer.sendSearchMessage(search);
+		listener.latch.await(10, TimeUnit.SECONDS);
+		
+		Display display = DataPopulator.createSampleDisplayObject("allianz");
+		producer.sendDisplayMessage(display);
+		listener.latch.await(10, TimeUnit.SECONDS);
+		
+		Social social = DataPopulator.createSampleSocialObject("allianz");
+		producer.sendSocialMessage(social);
+		listener.latch.await(10, TimeUnit.SECONDS);
+	}
 
-    public static class MessageProducer {
-    	
-    	@Autowired
-        private KafkaTemplate<String, Search> searchKafkaTemplate;
+	@Bean
+	public MessageProducer messageProducer() {
+		return new MessageProducer();
+	}
 
+	@Bean
+	public MessageListener messageListener() {
+		return new MessageListener();
+	}
 
-        @Value(value = "${downstream.search.topic.name}")
-        private String downstreamSearchTopicName;
+	public static class MessageProducer {
 
-        public void sendSearchMessage(Search message) {
-            
-        	searchKafkaTemplate.send(downstreamSearchTopicName, message);
-            /*ListenableFuture<SendResult<String, Search>> future = searchKafkaTemplate.send(downstreamSearchTopicName, message);
-            
-            future.addCallback(new ListenableFutureCallback<SendResult<String, Search>>() {
+		@Autowired
+		private KafkaTemplate<String, Search> searchKafkaTemplate;
 
-                @Override
-                public void onSuccess(SendResult<String, Search> result) {
-                    System.out.println("Sent message=[" + message + "] with offset=[" + result.getRecordMetadata().offset() + "]");
-                }
-                @Override
-                public void onFailure(Throwable ex) {
-                    System.out.println("Unable to send message=[" + message + "] due to : " + ex.getMessage());
-                }
-            });*/
-        }
-    }
+		@Autowired
+		private KafkaTemplate<String, Display> displayKafkaTemplate;
 
-    public static class MessageListener {
+		@Autowired
+		private KafkaTemplate<String, Social> socialKafkaTemplate;
 
-        private CountDownLatch latch = new CountDownLatch(3);
-        
-        @KafkaListener(topics = "${downstream.search.topic.name}", containerFactory = "searchKafkaListenerContainerFactory")
-        public void downstreamSearchTopicListener(Search search) {
-            System.out.println("Recieved search message: " + search);
-            this.latch.countDown();
-        }
-    }
+		@Value(value = "${downstream.search.topic.name}")
+		private String downstreamSearchTopicName;
+
+		@Value(value = "${downstream.display.topic.name}")
+		private String downstreamDisplayTopicName;
+
+		@Value(value = "${downstream.social.topic.name}")
+		private String downstreamSocialTopicName;
+
+		public void sendSearchMessage(Search message) {
+			searchKafkaTemplate.send(downstreamSearchTopicName, message);
+		}
+
+		public void sendDisplayMessage(Display message) {
+			displayKafkaTemplate.send(downstreamDisplayTopicName, message);
+		}
+
+		public void sendSocialMessage(Social message) {
+			socialKafkaTemplate.send(downstreamSocialTopicName, message);
+		}
+	}
+
+	public static class MessageListener {
+
+		private CountDownLatch latch = new CountDownLatch(3);
+
+		@KafkaListener(topics = "${downstream.search.topic.name}", containerFactory = "searchKafkaListenerContainerFactory")
+		public void downstreamSearchTopicListener(Search search) {
+			System.out.println("Recieved search message: " + search);
+			long currentTime = System.currentTimeMillis();
+			SearchInMemoryCache.put(currentTime, search);
+			this.latch.countDown();
+		}
+
+		@KafkaListener(topics = "${downstream.display.topic.name}", containerFactory = "displayKafkaListenerContainerFactory")
+		public void downstreamDisplayTopicListener(Display display) {
+			System.out.println("Recieved display message: " + display);
+			long currentTime = System.currentTimeMillis();
+			DisplayInMemoryCache.put(currentTime, display);
+			this.latch.countDown();
+		}
+
+		@KafkaListener(topics = "${downstream.social.topic.name}", containerFactory = "socialKafkaListenerContainerFactory")
+		public void downstreamSocialTopicListener(Social social) {
+			System.out.println("Recieved social message: " + social);
+			long currentTime = System.currentTimeMillis();
+			SocialInMemoryCache.put(currentTime, social);
+			this.latch.countDown();
+		}
+	}
 }

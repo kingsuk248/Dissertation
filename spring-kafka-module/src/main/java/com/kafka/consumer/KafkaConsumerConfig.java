@@ -36,5 +36,35 @@ public class KafkaConsumerConfig {
         factory.setConsumerFactory(createSearchConsumerFactory());
         return factory;
     }
+    
+    public ConsumerFactory<String, Search> createDisplayConsumerFactory() {
+        Map<String, Object> props = new HashMap<>();
+        props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapAddress);
+        props.put(ConsumerConfig.GROUP_ID_CONFIG, "display");
+        return new DefaultKafkaConsumerFactory<>(props, new StringDeserializer(), new JsonDeserializer<>(Search.class));
+    }
+
+    @Bean
+    public ConcurrentKafkaListenerContainerFactory<String, Search> displayKafkaListenerContainerFactory() {
+        ConcurrentKafkaListenerContainerFactory<String, Search> factory = new ConcurrentKafkaListenerContainerFactory<>();
+        factory.setConsumerFactory(createDisplayConsumerFactory());
+        return factory;
+    }
+
+    
+    public ConsumerFactory<String, Search> createSocialConsumerFactory() {
+        Map<String, Object> props = new HashMap<>();
+        props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapAddress);
+        props.put(ConsumerConfig.GROUP_ID_CONFIG, "social");
+        return new DefaultKafkaConsumerFactory<>(props, new StringDeserializer(), new JsonDeserializer<>(Search.class));
+    }
+
+    @Bean
+    public ConcurrentKafkaListenerContainerFactory<String, Search> socialKafkaListenerContainerFactory() {
+        ConcurrentKafkaListenerContainerFactory<String, Search> factory = new ConcurrentKafkaListenerContainerFactory<>();
+        factory.setConsumerFactory(createSocialConsumerFactory());
+        return factory;
+    }
+
 
 }
