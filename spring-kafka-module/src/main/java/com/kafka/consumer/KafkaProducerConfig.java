@@ -10,7 +10,7 @@ import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.core.ProducerFactory;
 import org.springframework.kafka.support.serializer.JsonSerializer;
 
-import com.kafka.model.message.Search;
+import com.kafka.model.channel.Search;
 
 import java.util.HashMap;
 import java.util.Map;
