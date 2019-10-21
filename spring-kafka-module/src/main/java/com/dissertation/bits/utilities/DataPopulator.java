@@ -1,12 +1,12 @@
-package com.kafka.utilities;
+package com.dissertation.bits.utilities;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
-import com.kafka.model.channel.Display;
-import com.kafka.model.channel.Search;
-import com.kafka.model.channel.Social;
+import com.dissertation.bits.model.Display;
+import com.dissertation.bits.model.Search;
+import com.dissertation.bits.model.Social;
 
 public class DataPopulator {
 

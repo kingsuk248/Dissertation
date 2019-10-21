@@ -1,14 +1,14 @@
-package com.kafka.cache;
+package com.dissertation.bits.cache;
 
 import org.apache.commons.collections4.map.LRUMap;
 
-import com.kafka.model.channel.Display;
+import com.dissertation.bits.model.Display;
 
 public class DisplayInMemoryCache {
 	public static LRUMap<Long, Display> displayCacheMap;
 	public long lastAccessed = System.currentTimeMillis();
 	
-	public DisplayInMemoryCache() {
+	static {
 		displayCacheMap = new LRUMap<>(1);
 	}
 	

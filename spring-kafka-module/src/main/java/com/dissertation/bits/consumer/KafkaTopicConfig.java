@@ -1,4 +1,4 @@
-package com.kafka.consumer;
+package com.dissertation.bits.consumer;
 
 import java.util.HashMap;
 import java.util.Map;

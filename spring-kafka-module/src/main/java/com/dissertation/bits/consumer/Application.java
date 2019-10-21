@@ -1,4 +1,4 @@
-package com.kafka.consumer;
+package com.dissertation.bits.consumer;
 
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
@@ -12,13 +12,13 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.core.KafkaTemplate;
 
-import com.kafka.cache.DisplayInMemoryCache;
-import com.kafka.cache.SearchInMemoryCache;
-import com.kafka.cache.SocialInMemoryCache;
-import com.kafka.model.channel.Display;
-import com.kafka.model.channel.Search;
-import com.kafka.model.channel.Social;
-import com.kafka.utilities.DataPopulator;
+import com.dissertation.bits.cache.DisplayInMemoryCache;
+import com.dissertation.bits.cache.SearchInMemoryCache;
+import com.dissertation.bits.cache.SocialInMemoryCache;
+import com.dissertation.bits.model.Display;
+import com.dissertation.bits.model.Search;
+import com.dissertation.bits.model.Social;
+import com.dissertation.bits.utilities.DataPopulator;
 
 @SpringBootApplication
 public class Application {

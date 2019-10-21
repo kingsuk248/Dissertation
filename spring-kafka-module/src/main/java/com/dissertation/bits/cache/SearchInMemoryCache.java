@@ -1,14 +1,14 @@
-package com.kafka.cache;
+package com.dissertation.bits.cache;
 
 import org.apache.commons.collections4.map.LRUMap;
 
-import com.kafka.model.channel.Search;
+import com.dissertation.bits.model.Search;
 
 public class SearchInMemoryCache {
 	public static LRUMap<Long, Search> searchCacheMap;
 	public long lastAccessed = System.currentTimeMillis();
 	
-	public SearchInMemoryCache() {
+	static {
 		searchCacheMap = new LRUMap<>(1);
 	}
 	

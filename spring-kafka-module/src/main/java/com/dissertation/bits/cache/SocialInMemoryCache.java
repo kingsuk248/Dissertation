@@ -1,14 +1,14 @@
-package com.kafka.cache;
+package com.dissertation.bits.cache;
 
 import org.apache.commons.collections4.map.LRUMap;
 
-import com.kafka.model.channel.Social;
+import com.dissertation.bits.model.Social;
 
 public class SocialInMemoryCache {
 	public static LRUMap<Long, Social> socialCacheMap;
 	public long lastAccessed = System.currentTimeMillis();
 	
-	public SocialInMemoryCache() {
+	static {
 		socialCacheMap = new LRUMap<>(1);
 	}
 	

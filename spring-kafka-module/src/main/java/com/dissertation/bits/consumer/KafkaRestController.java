@@ -1,4 +1,4 @@
-package com.kafka.controller;
+package com.dissertation.bits.consumer;
 
 import java.text.DateFormat;
 import java.util.ArrayList;
@@ -16,10 +16,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.kafka.model.channel.Display;
-import com.kafka.model.channel.Search;
-import com.kafka.model.channel.Social;
-import com.kafka.utilities.DataPopulator;
+import com.dissertation.bits.cache.DisplayInMemoryCache;
+import com.dissertation.bits.cache.SearchInMemoryCache;
+import com.dissertation.bits.cache.SocialInMemoryCache;
+import com.dissertation.bits.model.Display;
+import com.dissertation.bits.model.Search;
+import com.dissertation.bits.model.Social;
 
 @RestController
 public class KafkaRestController {
@@ -29,8 +31,8 @@ public class KafkaRestController {
 			@PathVariable("tenantId") final String tenantId) {
 		
 		List<Search> searchChannelValuesBatch = new ArrayList<Search>();
-		for (int i = 0; i < 10; i++) {
-			searchChannelValuesBatch.add(DataPopulator.createSampleSearchObject("allianz"));
+		for (Map.Entry<Long, Search> entry : SearchInMemoryCache.searchCacheMap.entrySet()) {
+			searchChannelValuesBatch.add(entry.getValue());
 		}
 		final Map<String, List<Map<String, Object>>> channelParametersMap = new HashMap<>();
 		List<Map<String, Object>> responseStringSearch = convertSearchChannelToJsonObject(searchChannelValuesBatch);
@@ -43,12 +45,12 @@ public class KafkaRestController {
 			@PathVariable("tenantId") final String tenantId) {
 		
 		List<Display> displayChannelValuesBatch = new ArrayList<Display>();
-		for (int i = 0; i < 10; i++) {
-			displayChannelValuesBatch.add(DataPopulator.createSampleDisplayObject("allianz"));
+		for (Map.Entry<Long, Display> entry : DisplayInMemoryCache.displayCacheMap.entrySet()) {
+			displayChannelValuesBatch.add(entry.getValue());
 		}
 		final Map<String, List<Map<String, Object>>> channelParametersMap = new HashMap<>();
-		List<Map<String, Object>> responseStringSearch = convertDisplayChannelToJsonObject(displayChannelValuesBatch);
-		channelParametersMap.put("search", responseStringSearch);
+		List<Map<String, Object>> responseStringDisplay = convertDisplayChannelToJsonObject(displayChannelValuesBatch);
+		channelParametersMap.put("search", responseStringDisplay);
 		return new ResponseEntity<Map<String, List<Map<String, Object>>>>(channelParametersMap, HttpStatus.OK);
 	}
 	
@@ -57,28 +59,42 @@ public class KafkaRestController {
 			@PathVariable("tenantId") final String tenantId) {
 		
 		List<Social> socialChannelValuesBatch = new ArrayList<Social>();
-		for (int i = 0; i < 10; i++) {
-			socialChannelValuesBatch.add(DataPopulator.createSampleSocialObject("allianz"));
+		for (Map.Entry<Long, Social> entry : SocialInMemoryCache.socialCacheMap.entrySet()) {
+			socialChannelValuesBatch.add(entry.getValue());
 		}
 		final Map<String, List<Map<String, Object>>> channelParametersMap = new HashMap<>();
-		List<Map<String, Object>> responseStringSearch = convertSocialChannelToJsonObject(socialChannelValuesBatch);
-		channelParametersMap.put("search", responseStringSearch);
+		List<Map<String, Object>> responseStringSocial = convertSocialChannelToJsonObject(socialChannelValuesBatch);
+		channelParametersMap.put("social", responseStringSocial);
 		return new ResponseEntity<Map<String, List<Map<String, Object>>>>(channelParametersMap, HttpStatus.OK);
 	}
 	
 	@GetMapping("channels/parameters/{tenantId}")
-	public List<ResponseEntity<Map<String, List<Map<String, Object>>>>> getAllChannelValuesBatch(
+	public ResponseEntity<Map<String, List<Map<String, Object>>>> getAllChannelValuesBatch(
 			@PathVariable("tenantId") final String tenantId) {
 
-		String tenantName = "allianz";
-		ResponseEntity<Map<String, List<Map<String, Object>>>> searchResponseEntity = getSearchChannelValuesBatch(tenantName);
-		ResponseEntity<Map<String, List<Map<String, Object>>>> displayResponseEntity = getDisplayChannelValuesBatch(tenantName);
-		ResponseEntity<Map<String, List<Map<String, Object>>>> socialResponseEntity = getSocialChannelValuesBatch(tenantName);
-		List<ResponseEntity<Map<String, List<Map<String, Object>>>>> allChannelsResponseEntity = new ArrayList<>();
-		allChannelsResponseEntity.add(searchResponseEntity);
-		allChannelsResponseEntity.add(displayResponseEntity);
-		allChannelsResponseEntity.add(socialResponseEntity);
-		return allChannelsResponseEntity;
+		List<Search> searchChannelValuesBatch = new ArrayList<Search>();
+		for (Map.Entry<Long, Search> entry : SearchInMemoryCache.searchCacheMap.entrySet()) {
+			searchChannelValuesBatch.add(entry.getValue());
+		}
+		final Map<String, List<Map<String, Object>>> channelParametersMap = new HashMap<>();
+		List<Map<String, Object>> responseStringSearch = convertSearchChannelToJsonObject(searchChannelValuesBatch);
+		channelParametersMap.put("search", responseStringSearch);
+		
+		List<Display> displayChannelValuesBatch = new ArrayList<Display>();
+		for (Map.Entry<Long, Display> entry : DisplayInMemoryCache.displayCacheMap.entrySet()) {
+			displayChannelValuesBatch.add(entry.getValue());
+		}
+		List<Map<String, Object>> responseStringDisplay = convertDisplayChannelToJsonObject(displayChannelValuesBatch);
+		channelParametersMap.put("display", responseStringDisplay);
+		
+		List<Social> socialChannelValuesBatch = new ArrayList<Social>();
+		for (Map.Entry<Long, Social> entry : SocialInMemoryCache.socialCacheMap.entrySet()) {
+			socialChannelValuesBatch.add(entry.getValue());
+		}
+		List<Map<String, Object>> responseStringSocial = convertSocialChannelToJsonObject(socialChannelValuesBatch);
+		channelParametersMap.put("social", responseStringSocial);
+		
+		return new ResponseEntity<Map<String, List<Map<String, Object>>>>(channelParametersMap, HttpStatus.OK);
 	}
 	
 	private List<Map<String, Object>> convertSearchChannelToJsonObject(List<Search> searchChannelValuesBatch) {

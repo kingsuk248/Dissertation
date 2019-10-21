@@ -1,4 +1,4 @@
-package com.kafka.model.channel;
+package com.dissertation.bits.model;
 
 public class Social {
 	private String tenantName;
