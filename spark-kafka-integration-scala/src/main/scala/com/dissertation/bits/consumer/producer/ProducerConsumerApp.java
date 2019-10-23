@@ -27,26 +27,29 @@ import org.springframework.kafka.core.ProducerFactory;
 import org.springframework.kafka.support.serializer.JsonDeserializer;
 import org.springframework.kafka.support.serializer.JsonSerializer;
 
+import com.dissertation.bits.model.Search;
+import com.dissertation.bits.utilities.Constants;
+import com.dissertation.bits.utilities.DataPopulator;
+
 @SpringBootApplication
-public class ProducerConsumerApplication {
+public class ProducerConsumerApp {
 	public static void main(String[] args) throws InterruptedException {
-		ConfigurableApplicationContext context = SpringApplication.run(ProducerConsumerApplication.class, args);
+		ConfigurableApplicationContext context = SpringApplication.run(ProducerConsumerApp.class, args);
 
 		MessageProducer producer = context.getBean(MessageProducer.class);
 		MessageListener listener = context.getBean(MessageListener.class);
 
-		DummyObject dummyObject = createDummyObject();
-		producer.sendSearchMessage(dummyObject);
+		for (int i = 0; i < Constants.BATCH_SIZE; i++) {
+			Search search = createSearchObject();
+			producer.sendSearchMessage(search);
+		}
 		listener.latch.await(5, TimeUnit.SECONDS);
 		context.close();
 	}
 
-	private static DummyObject createDummyObject() {
-		DummyObject dummyObject = new DummyObject();
-		dummyObject.setFirstName("John");
-		dummyObject.setLastName("Doe");
-		dummyObject.setAge(40);
-		return dummyObject;
+	private static Search createSearchObject() {
+		Search search = DataPopulator.createSampleSearchObject("allianz");
+		return search;
 	}
 
 	@Bean
@@ -62,13 +65,13 @@ public class ProducerConsumerApplication {
 	public static class MessageProducer {
 
 		@Autowired
-		private KafkaTemplate<String, DummyObject> dummyKafkaTemplate;
+		private KafkaTemplate<String, Search> searchKafkaTemplate;
 
-		@Value(value = "${test.topic.name}")
-		private String testTopicName;
+		@Value(value = "${search.topic.name}")
+		private String searchTopicName;
 
-		public void sendSearchMessage(DummyObject message) {
-			dummyKafkaTemplate.send(testTopicName, message);
+		public void sendSearchMessage(Search message) {
+			searchKafkaTemplate.send(searchTopicName, message);
 		}
 	}
 
@@ -76,9 +79,9 @@ public class ProducerConsumerApplication {
 
 		private CountDownLatch latch = new CountDownLatch(3);
 
-		@KafkaListener(topics = "${test.topic.name}", containerFactory = "dummyKafkaListenerContainerFactory")
-		public void downstreamSearchTopicListener(DummyObject dummyObject) {
-			System.out.println("Recieved dummy message: " + dummyObject);
+		@KafkaListener(topics = "${search.topic.name}", containerFactory = "searchKafkaListenerContainerFactory")
+		public void downstreamSearchTopicListener(Search search) {
+			System.out.println("Recieved search message: " + search);
 			this.latch.countDown();
 		}
 	}
@@ -104,7 +107,7 @@ public class ProducerConsumerApplication {
 		}
 
 		@Bean
-		public ProducerFactory<String, DummyObject> dummyMessageProducerFactory() {
+		public ProducerFactory<String, Search> searchMessageProducerFactory() {
 			Map<String, Object> configProps = new HashMap<>();
 			configProps.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapAddress);
 			configProps.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
@@ -113,8 +116,8 @@ public class ProducerConsumerApplication {
 		}
 
 		@Bean
-		public KafkaTemplate<String, DummyObject> dummyKafkaTemplate() {
-			return new KafkaTemplate<>(dummyMessageProducerFactory());
+		public KafkaTemplate<String, Search> searchKafkaTemplate() {
+			return new KafkaTemplate<>(searchMessageProducerFactory());
 		}
 	}
 
@@ -125,18 +128,18 @@ public class ProducerConsumerApplication {
 		@Value(value = "${kafka.bootstrapAddress}")
 		private String bootstrapAddress;
 
-		public ConsumerFactory<String, DummyObject> createDummyConsumerFactory() {
+		public ConsumerFactory<String, Search> createSearchConsumerFactory() {
 			Map<String, Object> props = new HashMap<>();
 			props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapAddress);
-			props.put(ConsumerConfig.GROUP_ID_CONFIG, "dummy");
+			props.put(ConsumerConfig.GROUP_ID_CONFIG, "search");
 			return new DefaultKafkaConsumerFactory<>(props, new StringDeserializer(),
-					new JsonDeserializer<>(DummyObject.class));
+					new JsonDeserializer<>(Search.class));
 		}
 
 		@Bean
-		public ConcurrentKafkaListenerContainerFactory<String, DummyObject> dummyKafkaListenerContainerFactory() {
-			ConcurrentKafkaListenerContainerFactory<String, DummyObject> factory = new ConcurrentKafkaListenerContainerFactory<>();
-			factory.setConsumerFactory(createDummyConsumerFactory());
+		public ConcurrentKafkaListenerContainerFactory<String, Search> searchKafkaListenerContainerFactory() {
+			ConcurrentKafkaListenerContainerFactory<String, Search> factory = new ConcurrentKafkaListenerContainerFactory<>();
+			factory.setConsumerFactory(createSearchConsumerFactory());
 			return factory;
 		}
 

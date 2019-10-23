@@ -65,6 +65,4 @@ public class KafkaConsumerConfig {
         factory.setConsumerFactory(createSocialConsumerFactory());
         return factory;
     }
-
-
 }
