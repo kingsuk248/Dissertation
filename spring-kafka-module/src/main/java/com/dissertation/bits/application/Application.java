@@ -1,4 +1,4 @@
-package com.dissertation.bits.consumer;
+package com.dissertation.bits.application;
 
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
@@ -9,6 +9,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.core.KafkaTemplate;
 
@@ -21,6 +22,7 @@ import com.dissertation.bits.model.Social;
 import com.dissertation.bits.utilities.DataPopulator;
 
 @SpringBootApplication
+@ComponentScan(basePackages = "com.dissertation.bits")
 public class Application {
 
 	public static void main(String[] args) throws Exception {

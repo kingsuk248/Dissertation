@@ -1,4 +1,4 @@
-package com.dissertation.bits.consumer;
+package com.dissertation.bits.downstream;
 
 import java.util.HashMap;
 import java.util.Map;
