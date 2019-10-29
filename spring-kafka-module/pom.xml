@@ -64,7 +64,11 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<configuration>
-					<mainClass>com.kafka.consumer.Application</mainClass>
+					<!-- Downstream -->
+					<!-- <mainClass>com.dissertation.bits.application.Application</mainClass> -->
+					
+					<!-- Upstream -->
+					<mainClass>com.dissertation.bits.topic.upstream.ProducerConsumerApp</mainClass>
 				</configuration>
 			</plugin>
 			<plugin>
@@ -72,7 +76,11 @@
 				<configuration>
 					<archive>
 						<manifest>
-							<mainClass>com.kafka.consumer.Application</mainClass>
+							<!-- Downstream -->
+							<!-- <mainClass>com.dissertation.bits.application.Application</mainClass> -->
+							
+							<!-- Upstream -->
+							<mainClass>com.dissertation.bits.topic.upstream.ProducerConsumerApp</mainClass>
 						</manifest>
 					</archive>
 				</configuration>

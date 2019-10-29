@@ -50,7 +50,7 @@ public class KafkaRestController {
 		}
 		final Map<String, List<Map<String, Object>>> channelParametersMap = new HashMap<>();
 		List<Map<String, Object>> responseStringDisplay = convertDisplayChannelToJsonObject(displayChannelValuesBatch);
-		channelParametersMap.put("search", responseStringDisplay);
+		channelParametersMap.put("display", responseStringDisplay);
 		return new ResponseEntity<Map<String, List<Map<String, Object>>>>(channelParametersMap, HttpStatus.OK);
 	}
 	

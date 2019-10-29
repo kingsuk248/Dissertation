@@ -49,6 +49,47 @@ public class DataPopulator {
 		social.setE_pcm(getRandomDoubleValue(2, 10));
 		return social;
 	}
+	
+	
+	public static Search createSampleSingleSearchObject(String tenantName) {
+		Search search = new Search();
+		search.setTenantName(tenantName);
+		search.setCost(getRandomDoubleValue(30, 60));
+		search.setClicks(getRandomIntValue(8, 15));
+		search.setCpc(getRandomDoubleValue(2, 6));
+		search.setAvg_position(getRandomDoubleValue(2, 5));
+		search.setImpressions(getRandomIntValue(2, 6));
+		search.setQuote(getRandomIntValue(1, 5));
+		search.setLeads(getRandomIntValue(0, 8));
+		return search;
+	}
+
+	public static Display createSampleSingleDisplayObject(String tenantName) {
+		Display display = new Display();
+		display.setTenantName(tenantName);
+		display.setCost(getRandomDoubleValue(30, 60));
+		display.setClicks(getRandomIntValue(8, 15));
+		display.setCpc(getRandomDoubleValue(2, 6));
+		display.setAvg_position(getRandomDoubleValue(2, 5));
+		display.setImpressions(getRandomIntValue(2, 6));
+		display.setQuote(getRandomIntValue(1, 5));
+		List<String> rtbSourceValues = Arrays.asList("AdX", "AppNexus", "Casale", "OpenX", "Rubicorn");
+		display.setRtb_source(getRandomStringValue(rtbSourceValues));
+		return display;
+	}
+
+	public static Social createSampleSingleSocialObject(String tenantName) {
+		Social social = new Social();
+		social.setTenantName(tenantName);
+		social.setCost(getRandomDoubleValue(30, 60));
+		social.setClicks(getRandomIntValue(8, 15));
+		social.setCpc(getRandomDoubleValue(2, 6));
+		social.setAvg_position(getRandomDoubleValue(2, 5));
+		social.setImpressions(getRandomIntValue(2, 6));
+		social.setCtr(getRandomDoubleValue(1, 5));
+		social.setE_pcm(getRandomDoubleValue(1, 3));
+		return social;
+	}
 
 	private static int getRandomIntValue(int min, int max) {
 		Random r = new Random();
@@ -57,7 +98,7 @@ public class DataPopulator {
 
 	private static double getRandomDoubleValue(int min, int max) {
 		Random r = new Random();
-		return r.nextDouble() * ((max - min) + min);
+		return Math.round(r.nextDouble() * ((max - min) + min));
 	}
 
 	private static String getRandomStringValue(List<String> values) {
