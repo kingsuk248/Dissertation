@@ -65,10 +65,10 @@
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<configuration>
 					<!-- Downstream -->
-					<!-- <mainClass>com.dissertation.bits.application.Application</mainClass> -->
+					<mainClass>com.dissertation.bits.application.Application</mainClass>
 					
 					<!-- Upstream -->
-					<mainClass>com.dissertation.bits.topic.upstream.ProducerConsumerApp</mainClass>
+					<!-- <mainClass>com.dissertation.bits.topic.upstream.ProducerConsumerApp</mainClass> -->
 				</configuration>
 			</plugin>
 			<plugin>
@@ -77,10 +77,10 @@
 					<archive>
 						<manifest>
 							<!-- Downstream -->
-							<!-- <mainClass>com.dissertation.bits.application.Application</mainClass> -->
+							<mainClass>com.dissertation.bits.application.Application</mainClass>
 							
 							<!-- Upstream -->
-							<mainClass>com.dissertation.bits.topic.upstream.ProducerConsumerApp</mainClass>
+							<!-- <mainClass>com.dissertation.bits.topic.upstream.ProducerConsumerApp</mainClass> -->
 						</manifest>
 					</archive>
 				</configuration>

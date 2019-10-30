@@ -64,11 +64,7 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<configuration>
-					<!-- Downstream -->
-					<mainClass>com.dissertation.bits.spring_rest_module.App</mainClass>
-
-					<!-- Upstream -->
-					<!-- <mainClass>com.dissertation.bits.topic.upstream.ProducerConsumerApp</mainClass> -->
+					<mainClass>com.dissertation.bits.application.App</mainClass>
 				</configuration>
 			</plugin>
 			<plugin>
@@ -76,11 +72,7 @@
 				<configuration>
 					<archive>
 						<manifest>
-							<!-- Downstream -->
-							<mainClass>com.dissertation.bits.spring_rest_module.App</mainClass>
-
-							<!-- Upstream -->
-							<!-- <mainClass>com.dissertation.bits.topic.upstream.ProducerConsumerApp</mainClass> -->
+							<mainClass>com.dissertation.bits.application.App</mainClass>
 						</manifest>
 					</archive>
 				</configuration>

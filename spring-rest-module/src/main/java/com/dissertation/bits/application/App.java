@@ -3,15 +3,12 @@ package com.dissertation.bits.application;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.kafka.annotation.KafkaListener;
-import org.springframework.kafka.core.KafkaTemplate;
 
 import com.dissertation.bits.cache.DisplayInMemoryCache;
 import com.dissertation.bits.cache.SearchInMemoryCache;
@@ -19,78 +16,35 @@ import com.dissertation.bits.cache.SocialInMemoryCache;
 import com.dissertation.bits.model.Display;
 import com.dissertation.bits.model.Search;
 import com.dissertation.bits.model.Social;
-import com.dissertation.bits.utilities.DataPopulator;
 
 @SpringBootApplication
 @ComponentScan(basePackages = "com.dissertation.bits")
-public class Application {
-
+public class App {
 	public static void main(String[] args) throws Exception {
 
-		ConfigurableApplicationContext context = SpringApplication.run(Application.class, args);
+		ConfigurableApplicationContext context = SpringApplication.run(App.class, args);
 
-		MessageProducer producer = context.getBean(MessageProducer.class);
-		MessageListener listener = context.getBean(MessageListener.class);
-
-		Search search = DataPopulator.getSearchObjectFromBatch("allianz");
-		producer.sendSearchMessage(search);
-		listener.latch.await(2, TimeUnit.SECONDS);
-
-		Display display = DataPopulator.getDisplayObjectFromBatch("allianz");
-		producer.sendDisplayMessage(display);
-		listener.latch.await(2, TimeUnit.SECONDS);
-
-		Social social = DataPopulator.getSocialObjectFromBatch("allianz");
-		producer.sendSocialMessage(social);
-		listener.latch.await(2, TimeUnit.SECONDS);
+		/*
+		 * for (int i = 0; i < 5; i++) { Thread.sleep(100); Search search =
+		 * DataPopulator.getSearchObjectFromBatch("allianz"); long currentTime =
+		 * System.currentTimeMillis(); SearchInMemoryCache.put(currentTime, search); }
+		 * for (int i = 0; i < 5; i++) { Thread.sleep(100); Display display =
+		 * DataPopulator.getDisplayObjectFromBatch("allianz"); long currentTime =
+		 * System.currentTimeMillis(); DisplayInMemoryCache.put(currentTime, display); }
+		 * for (int i = 0; i < 5; i++) { Thread.sleep(100); Social social =
+		 * DataPopulator.getSocialObjectFromBatch("allianz"); long currentTime =
+		 * System.currentTimeMillis(); SocialInMemoryCache.put(currentTime, social); }
+		 */
 		
-		context.stop();
-		context.close();
+		MessageListener listener = context.getBean(MessageListener.class);
+		listener.latch.await(5, TimeUnit.SECONDS);
 	}
-
-	@Bean
-	public MessageProducer messageProducer() {
-		return new MessageProducer();
-	}
-
+	
 	@Bean
 	public MessageListener messageListener() {
 		return new MessageListener();
 	}
-
-	public static class MessageProducer {
-
-		@Autowired
-		private KafkaTemplate<String, Search> searchKafkaTemplate;
-
-		@Autowired
-		private KafkaTemplate<String, Display> displayKafkaTemplate;
-
-		@Autowired
-		private KafkaTemplate<String, Social> socialKafkaTemplate;
-
-		@Value(value = "${downstream.search.topic.name}")
-		private String downstreamSearchTopicName;
-
-		@Value(value = "${downstream.display.topic.name}")
-		private String downstreamDisplayTopicName;
-
-		@Value(value = "${downstream.social.topic.name}")
-		private String downstreamSocialTopicName;
-
-		public void sendSearchMessage(Search message) {
-			searchKafkaTemplate.send(downstreamSearchTopicName, message);
-		}
-
-		public void sendDisplayMessage(Display message) {
-			displayKafkaTemplate.send(downstreamDisplayTopicName, message);
-		}
-
-		public void sendSocialMessage(Social message) {
-			socialKafkaTemplate.send(downstreamSocialTopicName, message);
-		}
-	}
-
+	
 	public static class MessageListener {
 
 		private CountDownLatch latch = new CountDownLatch(3);
@@ -100,6 +54,7 @@ public class Application {
 			System.out.println("Recieved downstream search message: " + search);
 			long currentTime = System.currentTimeMillis();
 			SearchInMemoryCache.put(currentTime, search);
+			this.latch.countDown();
 		}
 
 		@KafkaListener(topics = "${downstream.display.topic.name}", containerFactory = "displayKafkaListenerContainerFactory")
@@ -107,6 +62,7 @@ public class Application {
 			System.out.println("Recieved downstream display message: " + display);
 			long currentTime = System.currentTimeMillis();
 			DisplayInMemoryCache.put(currentTime, display);
+			this.latch.countDown();
 		}
 
 		@KafkaListener(topics = "${downstream.social.topic.name}", containerFactory = "socialKafkaListenerContainerFactory")
@@ -114,6 +70,7 @@ public class Application {
 			System.out.println("Recieved downstream social message: " + social);
 			long currentTime = System.currentTimeMillis();
 			SocialInMemoryCache.put(currentTime, social);
+			this.latch.countDown();
 		}
 	}
 }

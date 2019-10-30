@@ -10,7 +10,7 @@ import com.dissertation.bits.model.Social;
 
 public class DataPopulator {
 
-	public static Search createSampleSearchObject(String tenantName) {
+	public static Search getSearchObjectFromBatch(String tenantName) {
 		Search search = new Search();
 		search.setTenantName(tenantName);
 		search.setCost(getRandomDoubleValue(300, 600));
@@ -23,7 +23,7 @@ public class DataPopulator {
 		return search;
 	}
 
-	public static Display createSampleDisplayObject(String tenantName) {
+	public static Display getDisplayObjectFromBatch(String tenantName) {
 		Display display = new Display();
 		display.setTenantName(tenantName);
 		display.setCost(getRandomDoubleValue(300, 600));
@@ -37,7 +37,7 @@ public class DataPopulator {
 		return display;
 	}
 
-	public static Social createSampleSocialObject(String tenantName) {
+	public static Social getSocialObjectFromBatch(String tenantName) {
 		Social social = new Social();
 		social.setTenantName(tenantName);
 		social.setCost(getRandomDoubleValue(300, 600));

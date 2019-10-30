@@ -9,7 +9,7 @@ public class SearchInMemoryCache {
 	public long lastAccessed = System.currentTimeMillis();
 	
 	static {
-		searchCacheMap = new LRUMap<>(1);
+		searchCacheMap = new LRUMap<>(5);
 	}
 	
 	public static void put(Long key, Search search) {
