@@ -1,4 +1,4 @@
-package com.dissertation.bits.model;
+package com.dissertation.application;
 
 public class Social {
 	private String tenantName;

@@ -1,4 +1,4 @@
-package com.dissertation.bits.model;
+package com.dissertation.application;
 
 public class Search {
 	private String tenantName;
