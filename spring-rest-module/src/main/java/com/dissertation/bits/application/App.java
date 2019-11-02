@@ -17,57 +17,61 @@ import com.dissertation.bits.model.Display;
 import com.dissertation.bits.model.Search;
 import com.dissertation.bits.model.Social;
 
+/**
+ * 
+ * Spring Boot entry point which listens to the messages published in the
+ * channel specific downstream Kafka topics and populates the cache for feeding
+ * the RESTful APIs
+ *
+ */
 @SpringBootApplication
 @ComponentScan(basePackages = "com.dissertation.bits")
 public class App {
 	public static void main(String[] args) throws Exception {
 
 		ConfigurableApplicationContext context = SpringApplication.run(App.class, args);
-
-		/*
-		 * for (int i = 0; i < 5; i++) { Thread.sleep(100); Search search =
-		 * DataPopulator.getSearchObjectFromBatch("allianz"); long currentTime =
-		 * System.currentTimeMillis(); SearchInMemoryCache.put(currentTime, search); }
-		 * for (int i = 0; i < 5; i++) { Thread.sleep(100); Display display =
-		 * DataPopulator.getDisplayObjectFromBatch("allianz"); long currentTime =
-		 * System.currentTimeMillis(); DisplayInMemoryCache.put(currentTime, display); }
-		 * for (int i = 0; i < 5; i++) { Thread.sleep(100); Social social =
-		 * DataPopulator.getSocialObjectFromBatch("allianz"); long currentTime =
-		 * System.currentTimeMillis(); SocialInMemoryCache.put(currentTime, social); }
-		 */
-		
 		MessageListener listener = context.getBean(MessageListener.class);
 		listener.latch.await(5, TimeUnit.SECONDS);
 	}
-	
+
 	@Bean
 	public MessageListener messageListener() {
 		return new MessageListener();
 	}
-	
+
 	public static class MessageListener {
 
 		private CountDownLatch latch = new CountDownLatch(3);
 
+		/**
+		 * Kafka topic listener listening the downstream Search topic
+		 * @param search
+		 */
 		@KafkaListener(topics = "${downstream.search.topic.name}", containerFactory = "searchKafkaListenerContainerFactory")
 		public void downstreamSearchTopicListener(Search search) {
-			System.out.println("Recieved downstream search message: " + search);
 			long currentTime = System.currentTimeMillis();
 			SearchInMemoryCache.put(currentTime, search);
 			this.latch.countDown();
 		}
 
+		/**
+		 * Kafka topic listener listening the downstream Display topic
+		 * @param display
+		 */
 		@KafkaListener(topics = "${downstream.display.topic.name}", containerFactory = "displayKafkaListenerContainerFactory")
 		public void downstreamDisplayTopicListener(Display display) {
-			System.out.println("Recieved downstream display message: " + display);
 			long currentTime = System.currentTimeMillis();
 			DisplayInMemoryCache.put(currentTime, display);
 			this.latch.countDown();
 		}
+		
+		/**
+		 * Kafka topic listener listening the downstream Social topic
+		 * @param search
+		 */
 
 		@KafkaListener(topics = "${downstream.social.topic.name}", containerFactory = "socialKafkaListenerContainerFactory")
 		public void downstreamSocialTopicListener(Social social) {
-			System.out.println("Recieved downstream social message: " + social);
 			long currentTime = System.currentTimeMillis();
 			SocialInMemoryCache.put(currentTime, social);
 			this.latch.countDown();
