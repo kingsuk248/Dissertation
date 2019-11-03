@@ -98,7 +98,7 @@ public class DataPopulator {
 
 	private static double getRandomDoubleValue(int min, int max) {
 		Random r = new Random();
-		return Math.round(r.nextDouble() * ((max - min) + min));
+		return Math.round((r.nextDouble() * (max - min)) + min);
 	}
 
 	private static String getRandomStringValue(List<String> values) {

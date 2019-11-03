@@ -34,15 +34,15 @@ public class Application {
 
 		Search search = DataPopulator.getSearchObjectFromBatch("allianz");
 		producer.sendSearchMessage(search);
-		listener.latch.await(2, TimeUnit.SECONDS);
+		listener.latch.await(1, TimeUnit.SECONDS);
 
 		Display display = DataPopulator.getDisplayObjectFromBatch("allianz");
 		producer.sendDisplayMessage(display);
-		listener.latch.await(2, TimeUnit.SECONDS);
+		listener.latch.await(1, TimeUnit.SECONDS);
 
 		Social social = DataPopulator.getSocialObjectFromBatch("allianz");
 		producer.sendSocialMessage(social);
-		listener.latch.await(2, TimeUnit.SECONDS);
+		listener.latch.await(1, TimeUnit.SECONDS);
 		
 		context.stop();
 		context.close();

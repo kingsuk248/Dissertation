@@ -44,9 +44,9 @@ public class ProducerConsumerApp {
 		for (int i = 0; i < Constants.BATCH_SIZE; i++) {
 			Search search = getSearchObject();
 			producer.sendSearchMessage(search);
-			Display display = getDisplayObject();
+			//Display display = getDisplayObject();
 			//producer.sendDisplayMessage(display);
-			Social social = getSocialObject();
+			//Social social = getSocialObject();
 			//producer.sendSocialMessage(social);
 		}
 		listener.latch.await(5, TimeUnit.SECONDS);
