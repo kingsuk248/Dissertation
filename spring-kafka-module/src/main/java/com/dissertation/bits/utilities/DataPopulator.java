@@ -13,13 +13,13 @@ public class DataPopulator {
 	public static Search getSearchObjectFromBatch(String tenantName) {
 		Search search = new Search();
 		search.setTenantName(tenantName);
-		search.setCost(getRandomDoubleValue(300, 600));
-		search.setClicks(getRandomIntValue(80, 150));
-		search.setCpc(getRandomDoubleValue(20, 60));
-		search.setAvg_position(getRandomDoubleValue(2, 5));
-		search.setImpressions(getRandomIntValue(20, 60));
-		search.setQuote(getRandomIntValue(5, 30));
-		search.setLeads(getRandomIntValue(5, 40));
+		search.setCost(getRandomDoubleValue(400, 500));
+		search.setClicks(getRandomIntValue(100, 140));
+		search.setCpc(getRandomDoubleValue(40, 60));
+		search.setAvg_position(getRandomDoubleValue(3, 5));
+		search.setImpressions(getRandomIntValue(40, 60));
+		search.setQuote(getRandomIntValue(20, 30));
+		search.setLeads(getRandomIntValue(25, 40));
 		return search;
 	}
 

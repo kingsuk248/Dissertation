@@ -19,6 +19,7 @@ import com.dissertation.bits.cache.SocialInMemoryCache;
 import com.dissertation.bits.model.Display;
 import com.dissertation.bits.model.Search;
 import com.dissertation.bits.model.Social;
+import com.dissertation.bits.utilities.Constants;
 import com.dissertation.bits.utilities.DataPopulator;
 
 @SpringBootApplication
@@ -32,18 +33,42 @@ public class Application {
 		MessageProducer producer = context.getBean(MessageProducer.class);
 		MessageListener listener = context.getBean(MessageListener.class);
 
-		Search search = DataPopulator.getSearchObjectFromBatch("allianz");
-		producer.sendSearchMessage(search);
-		listener.latch.await(1, TimeUnit.SECONDS);
+		Runnable searchThread = () -> {
+			for (int i = 0; i < Constants.DEMO_NUMBER_MESSAGES; i++) {
+				Search search = DataPopulator.getSearchObjectFromBatch("allianz");
+				producer.sendSearchMessage(search);
+				try {
+					listener.latch.await(10, TimeUnit.SECONDS);
+				} catch (InterruptedException e) {
+				}
+			}
+		};
 
-		Display display = DataPopulator.getDisplayObjectFromBatch("allianz");
-		producer.sendDisplayMessage(display);
-		listener.latch.await(1, TimeUnit.SECONDS);
+		Runnable displayThread = () -> {
+			for (int i = 0; i < Constants.DEMO_NUMBER_MESSAGES; i++) {
+				Display display = DataPopulator.getDisplayObjectFromBatch("allianz");
+				producer.sendDisplayMessage(display);
+				try {
+					listener.latch.await(10, TimeUnit.SECONDS);
+				} catch (InterruptedException e) {
+				}
+			}
+		};
 
-		Social social = DataPopulator.getSocialObjectFromBatch("allianz");
-		producer.sendSocialMessage(social);
-		listener.latch.await(1, TimeUnit.SECONDS);
-		
+		Runnable socialThread = () -> {
+			for (int i = 0; i < Constants.DEMO_NUMBER_MESSAGES; i++) {
+				Social social = DataPopulator.getSocialObjectFromBatch("allianz");
+				producer.sendSocialMessage(social);
+				try {
+					listener.latch.await(10, TimeUnit.SECONDS);
+				} catch (InterruptedException e) {
+				}
+			}
+		};
+
+		new Thread(searchThread).start();
+		new Thread(displayThread).start();
+		new Thread(socialThread).start();
 		context.stop();
 		context.close();
 	}
